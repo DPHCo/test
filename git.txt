@@ -1,0 +1,48 @@
+# Preguntas y Respuestas sobre Git
+
+## ¿Qué es Git y para qué se utiliza en el desarrollo de software?
+
+**Git** es un sistema de control de versiones distribuido que se utiliza para rastrear cambios en el código fuente durante el desarrollo de software. Permite a múltiples desarrolladores trabajar en un proyecto de manera simultánea sin sobrescribir el trabajo de otros. Git facilita la gestión de versiones del código, permite revertir cambios a versiones anteriores, y soporta la colaboración a través de "branches" y "merges".
+
+## ¿Cuál es el comando para clonar un repositorio de Git?
+
+git clone <url-del-repositorio>
+
+## ¿Qué es un "branch" (rama) en Git y para qué se utiliza?
+Un branch (rama) en Git es una línea paralela de desarrollo que permite trabajar en una funcionalidad o corrección de manera aislada del resto del proyecto. Las ramas permiten desarrollar nuevas características, corregir errores o experimentar con nuevas ideas sin afectar el código principal. Una vez que la rama está lista, puede fusionarse con otra rama, como main, para integrar los cambios.
+
+## Proporciona los comandos necesarios para crear una nueva rama llamada feature-xyz, cambiar a esa rama, y luego fusionarla con la rama main.
+git checkout -b feature-xyz  # Crear y cambiar a la nueva rama
+# Hacer los cambios necesarios y realizar commits
+git checkout main            # Cambiar a la rama principal
+git merge feature-xyz        # Fusionar la rama `feature-xyz` con `main`
+
+## ¿Qué es un "merge conflict" y cómo se resuelve?
+Un merge conflict (conflicto de fusión) ocurre cuando Git no puede combinar automáticamente los cambios de diferentes ramas debido a modificaciones conflictivas en las mismas partes del código. Para resolverlo, se deben revisar los archivos en conflicto, manualmente seleccionar y editar las partes correctas, y luego marcar los conflictos como resueltos.
+
+Resolución de un conflicto de fusión:
+	Editar los archivos en conflicto para resolver las diferencias.
+	Añadir los archivos resueltos al área de staging:
+		git add <archivo-en-conflicto>
+	Completar la fusión con un commit:
+		git commit
+## ¿Cuál es el comando para visualizar el estado actual del repositorio en Git?
+git status
+## Explica la diferencia entre git pull y git fetch.
+git fetch: Descarga los cambios desde el repositorio remoto a tu repositorio local, pero no los fusiona automáticamente con tu rama actual. Es útil para revisar los cambios antes de integrarlos.
+
+git pull: Combina git fetch y git merge en un solo paso. Descarga los cambios desde el repositorio remoto y los fusiona automáticamente con tu rama actual.
+
+## ¿Cuál es el comando para revertir el último commit en Git?
+git revert HEAD
+
+## ¿Qué es un "remote repository" y cómo se configura en Git?
+Un remote repository (repositorio remoto) es una versión de tu proyecto que está alojada en un servidor remoto, permitiendo la colaboración y el acceso desde diferentes ubicaciones. Se utiliza para sincronizar el trabajo entre múltiples desarrolladores.
+
+Configuración de un repositorio remoto en Git:
+	Añadir un repositorio remoto:
+		git remote add origin <url-del-repositorio-remoto>
+
+## Proporciona los comandos para añadir todos los cambios en los archivos al staging area y luego realizar un commit con el mensaje "Initial commit".
+git add *         # Añadir todos los cambios al staging area
+git commit -m "Initial commit"  # Realizar un commit con el mensaje "Initial commit"
