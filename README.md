@@ -21,6 +21,6 @@ Sigue estos pasos para levantar el proyecto en tu entorno local:
 git clone https://github.com/DPHCo/test.git
 cd test
 
-https://github.com/DPHCo/test.git
+composer install
 
 Y acceder a tu servidor local.
