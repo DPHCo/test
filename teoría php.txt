@@ -1,0 +1,56 @@
+3->Explica la arquitectura de Symfony y cómo se organiza un proyecto típico en términos de carpetas y archivos.
+Symfony es un framework de desarrollo web basado en PHP que sigue el patrón de diseño MVC (Modelo-Vista-Controlador). La arquitectura de Symfony está diseñada para ser flexible y modular, permitiendo a los desarrolladores utilizar solo los componentes que necesitan.
+
+Estructura de las carpetas:
+my_project/
+├── bin/
+│   └── console             # Archivo de consola de Symfony
+├── config/
+│   ├── packages/           # Configuración de paquetes
+│   ├── routes/             # Definición de rutas
+│   └── services.yaml       # Configuración de servicios
+├── public/
+│   ├── index.php           # Punto de entrada de la aplicación web
+│   └── assets/             # Archivos públicos (CSS, JavaScript, imágenes)
+├── src/
+│   ├── Controller/         # Controladores de la aplicación
+│   ├── Entity/             # Entidades del modelo de datos
+│   ├── EventSubscriber/    # Suscriptores de eventos
+│   ├── Repository/         # Repositorios de entidades
+│   ├── Service/            # Servicios de la aplicación
+│   └── Kernel.php          # Configuración del kernel de Symfony
+├── templates/              # Plantillas Twig
+│   └── base.html.twig      # Plantilla base
+├── translations/           # Archivos de traducción
+├── var/
+│   ├── cache/              # Caché de la aplicación
+│   └── log/                # Archivos de log
+├── vendor/                 # Dependencias de Composer
+├── .env                    # Variables de entorno
+├── composer.json           # Archivo de configuración de Composer
+├── composer.lock           # Archivo de bloqueo de dependencias
+└── symfony.lock            # Archivo de bloqueo específico de Symfony
+
+
+6->Explica el concepto de Dependency Injection (DI) en Symfony y cómo se configura.
+Dependency Injection (DI) es un patrón de diseño utilizado para gestionar las dependencias de una clase. En lugar de que una clase cree directamente sus dependencias, éstas se inyectan desde el exterior, generalmente por un contenedor de inyección de dependencias.
+La configuración de DI en Symfony se realiza principalmente a través de archivos de configuración (como services.yaml) o mediante anotaciones.
+
+7->Escribe una consulta Doctrine en Symfony para obtener todos los registros de una entidad Product donde el precio sea mayor a 100.
+public function findProductsWithPriceGreaterThan($price): array {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.price > :price')
+            ->setParameter('price', $price)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+8->¿Qué es el Event Dispatcher en Symfony y para qué se utiliza?
+El Event Dispatcher en Symfony es un componente central del framework que implementa el patrón de diseño de "Observer". Este componente permite a los distintos elementos de la aplicación comunicarse de manera eficiente sin estar fuertemente acoplados entre sí. Básicamente, el Event Dispatcher permite que ciertos eventos disparen acciones específicas a través de los listeners y subscribers.
+El Event Dispatcher se utiliza para:
+
+Desacoplamiento del código: Permite que diferentes partes de una aplicación interactúen sin conocer los detalles de implementación de las demás.
+Extensibilidad: Facilita la extensión de funcionalidades de la aplicación mediante la adición de nuevos listeners o subscribers sin modificar el código existente.
+Organización del código: Ayuda a mantener el código organizado y limpio, distribuyendo las responsabilidades en listeners o subscribers especializados.
+

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test JS</title>
+</head>
+<body>
+    <button id="btn">Touch Me!</button>
+    <h1>Pokedex</h1>
+    <input type="text" id="pokemonInput" placeholder="Ingrese el nombre de un Pokémon">
+    <button onclick="buscarPokemon()">Buscar</button>
+    <div id="result">Ingrese un nombre de Pokémon y presione "Buscar".</div>
+    <script>
+        /*
+        1->En JavaScript, var, let y const son palabras clave para declarar variables con diferencias clave:
+            var: Tiene alcance de función o global, permite el hoisting 
+            con valor inicial undefined, y permite tanto la 
+            redefinición como la reasignación de la variable.
+            let: Tiene alcance de bloque, también sufre hoisting pero no 
+            puede ser utilizada antes de su declaración 
+            debido a la "zona muerta temporal", 
+            permite la reasignación pero no la redefinición 
+            dentro del mismo bloque.
+            const: Tiene alcance de bloque, sufre hoisting con la "zona muerta temporal", 
+            y no permite ni la redefinición ni la reasignación. 
+            Sin embargo, los objetos y arrays declarados con const pueden 
+            tener sus propiedades o elementos modificados.
+        */
+        //2->Invertir una cadena
+        function invertirCadena(cadena) {
+            return cadena.split('').reverse().join('');
+        }
+        let text = "Hello World";
+        console.log(invertirCadena(text));
+        /*
+        3->El Event Loop (bucle de eventos) es un mecanismo fundamental en JavaScript
+         que maneja la ejecución de código, eventos y tareas asíncronas, 
+         permitiendo que JavaScript sea concurrente y no bloqueante.
+         Cómo Funciona el Event Loop:
+            1.Ejecuta el código en el Call Stack: El Event Loop verifica si hay 
+            tareas en el Call Stack y las ejecuta en orden. Si el Call Stack 
+            está vacío, pasa al siguiente paso.
+            2.Maneja la Microtask Queue: Si el Call Stack está vacío, 
+            el Event Loop verifica la Microtask Queue y 
+            ejecuta todas las microtareas (como callbacks de 
+            promesas resueltas) antes de pasar a la siguiente 
+            tarea de la Callback Queue.
+            3.Maneja la Callback Queue: Una vez que la Microtask 
+            Queue está vacía, el Event Loop mueve la primera tarea de 
+            la Callback Queue al Call Stack y la ejecuta.
+        */
+        //4->Filtro de # pares
+        let arr = [ 2, 3, 4, 5, 6, 8];
+        let filterArr = arr.filter((val) => val%2 == 0);
+
+        console.log(filterArr);
+        /*
+        5->El Document Object Model (DOM) es una representación en forma de árbol de los elementos de una página web. 
+        Cada nodo del árbol es un objeto que corresponde a una parte de la página, como un elemento HTML, un atributo, 
+        o un texto. El DOM permite que los lenguajes de programación, como JavaScript, accedan y manipulen la estructura, 
+        estilo y contenido de una página web de manera dinámica.
+        */
+        //6->event listener que tambien cuenta como un ejemplo de manipulación del DOM
+        let btnRef = document.getElementById('btn');
+        btnRef.addEventListener('click', () => {
+            alert('Hello World')
+        })
+
+        /*
+        7->Una Promesa en JavaScript es un objeto que representa la eventual finalización (o falla) de 
+        una operación asíncrona y su valor resultante. Las Promesas permiten manejar operaciones 
+        asíncronas de una manera más limpia y manejable, evitando el problema de "callback hell" 
+        que ocurre con anidamiento excesivo de funciones de callback.
+        */
+        // Crear una nueva Promesa
+        let promesa = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                let exito = true; // Simulamos que la operación fue exitosa
+
+                if (exito) {
+                    resolve('¡Operación exitosa!');
+                } else {
+                    reject('Hubo un error.');
+                }
+            }, 2000); // Simulamos una operación que toma 2 segundos
+        });
+
+        // Consumir la Promesa
+        promesa
+        .then((resultado) => {
+            console.log(resultado); // Se ejecuta si la promesa se cumple
+        })
+        .catch((error) => {
+            console.error(error); // Se ejecuta si la promesa se rechaza
+        })
+        .finally(() => {
+            console.log('Operación completada.'); // Se ejecuta siempre
+        });
+
+        //8->Funcion AJAX
+        function buscarPokemon() {
+            const nombre = document.getElementById('pokemonInput').value;
+            obtenerDatosPokemon(nombre);
+        }
+
+        function obtenerDatosPokemon(nombre) {
+            const url = `https://pokeapi.co/api/v2/pokemon/${nombre.toLowerCase()}`;
+
+            fetch(url)
+                .then(response => {
+                    // Verificar si la respuesta es exitosa
+                    if (!response.ok) {
+                        throw new Error('Pokémon no encontrado');
+                    }
+                    // Convertir la respuesta a formato JSON
+                    return response.json();
+                })
+                .then(data => {
+                    // Obtener el elemento con el id #result
+                    const resultElement = document.getElementById('result');
+                    // Limpiar el contenido previo
+                    resultElement.innerHTML = '';
+                    // Mostrar los datos del Pokémon
+                    const pokemonHTML = `
+                        <h2>${data.name.toUpperCase()}</h2>
+                        <img src="${data.sprites.front_default}" alt="${data.name}">
+                        <p><strong>Height:</strong> ${data.height}</p>
+                        <p><strong>Weight:</strong> ${data.weight}</p>
+                        <p><strong>Types:</strong> ${data.types.map(typeInfo => typeInfo.type.name).join(', ')}</p>
+                    `;
+                    resultElement.innerHTML = pokemonHTML;
+                })
+                .catch(error => {
+                    // Manejar cualquier error que ocurra durante la petición
+                    const resultElement = document.getElementById('result');
+                    resultElement.innerHTML = `Error: ${error.message}`;
+                });
+        }
+        /*
+        9-> null es un valor intencionalmente vacío, undefined indica que una variable 
+        no tiene asignado ningún valor y NaN representa un resultado matemático 
+        inválido.
+        */
+        //10->LocalStorage
+        function saveLocal(clave, valor) {
+            const valorJSON = JSON.stringify(valor);
+            localStorage.setItem(clave, valorJSON);
+        }
+
+        function getLocal(clave) {
+            const valorJSON = localStorage.getItem(clave);
+            return JSON.parse(valorJSON);
+        }
+
+        // Guardar un valor
+        saveLocal('testing', { nombre: 'Fear', edad: 22 });
+
+        // Recuperar el valor
+        const valRecovery = getLocal('testing');
+        console.log(valRecovery);
+    </script>
+</body>
+</html>
